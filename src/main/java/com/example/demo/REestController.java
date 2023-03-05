@@ -1,32 +1,37 @@
 package com.example.demo;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-
+import java.util.List;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
+
 public class REestController {
 	
-	StockRepository stockRepository;
+
+	
+
+	
+	//gets stock details
 	@GetMapping("/getStocks")
 	public JsonNode getStocks() throws IOException {
 		
@@ -35,7 +40,7 @@ public class REestController {
 	}
 	
 	
-	
+	//gets stock values
 	@GetMapping("/getStockValues")
 	
 	public JsonNode getStockValues() throws IOException {
@@ -76,12 +81,13 @@ public class REestController {
 					
 					return node;
 				}
-
-	//functionality work in progress
-//	@RequestMapping(value ="/exportStockValues" ,consumes = MediaType.APP)
-//	public String exportStockValues(@RequestBody StockValues stockValues) {
-//		
-//		stockRepository.save(stockValues);
-//		return "saved";
-//	}
+	
+	//returns json format of selected stocks
+@PostMapping("/exportStockValues")
+public ResponseEntity<List <StockValues>> exportStockValues(@RequestBody List<StockValues> stockValues) throws StreamWriteException, DatabindException{
+	
+	return ResponseEntity.ok(stockValues);
+			
+		
+}
 }
